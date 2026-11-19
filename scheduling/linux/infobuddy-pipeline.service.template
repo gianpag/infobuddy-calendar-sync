@@ -1,0 +1,15 @@
+[Unit]
+Description=InfoBuddy pipeline (InfoMentor extraction, Study Brief, Calendar sync)
+
+[Service]
+Type=oneshot
+WorkingDirectory=__PROJECT_DIR__
+# Supplies KEYRING_CRYPTFILE_PASSWORD for keyring_linux_bootstrap.py -- only needed on a
+# host where no Secret Service provider is reachable (e.g. SSH-key-only access, where
+# PAM's gnome-keyring auto-unlock never fires); harmless no-op otherwise. The "-" prefix
+# means a missing file isn't fatal. See scheduling/linux/install.sh for how this file is
+# generated (once, never overwritten -- that would break previously-encrypted entries).
+EnvironmentFile=-__KEYRING_SECRET_FILE__
+ExecStart=__PYTHON__ __PROJECT_DIR__/run_pipeline.py --headless --sync-calendar --sync-timetable
+StandardOutput=append:__PROJECT_DIR__/logs/pipeline.out.log
+StandardError=append:__PROJECT_DIR__/logs/pipeline.err.log

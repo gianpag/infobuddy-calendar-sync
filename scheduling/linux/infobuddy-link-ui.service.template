@@ -1,0 +1,18 @@
+[Unit]
+Description=InfoBuddy Google Calendar accounts UI (calendar_link_ui.py on :8200)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=__PROJECT_DIR__
+# KEYRING_CRYPTFILE_PASSWORD: Google tokens and the link-UI login live in the cryptfile keyring.
+EnvironmentFile=-__KEYRING_SECRET_FILE__
+Environment=PYTHONUNBUFFERED=1
+ExecStart=__PYTHON__ __PROJECT_DIR__/calendar_link_ui.py --port 8200
+Restart=on-failure
+RestartSec=5
+# Logs: journalctl --user -u infobuddy-link-ui -f   (or: inkbuddy logs link -f)
+
+[Install]
+WantedBy=default.target

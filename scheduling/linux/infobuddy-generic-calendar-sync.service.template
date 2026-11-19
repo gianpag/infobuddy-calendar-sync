@@ -1,0 +1,12 @@
+[Unit]
+Description=InfoBuddy generic Google Calendar sync (out/generic-calendar.json)
+
+[Service]
+Type=oneshot
+WorkingDirectory=__PROJECT_DIR__
+# See infobuddy-pipeline.service.template's own comment -- same keyring bootstrap need,
+# shared secret file.
+EnvironmentFile=-__KEYRING_SECRET_FILE__
+ExecStart=__PYTHON__ __PROJECT_DIR__/google_calendar_read_sync.py
+StandardOutput=append:__PROJECT_DIR__/logs/generic-calendar-sync.out.log
+StandardError=append:__PROJECT_DIR__/logs/generic-calendar-sync.err.log

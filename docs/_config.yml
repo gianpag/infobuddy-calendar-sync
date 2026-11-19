@@ -1,0 +1,7 @@
+# GitHub Pages (enable from the /docs folder on the default branch).
+# Intended public URLs:
+#   https://gianpag.github.io/infobuddy-calendar-sync/
+#   https://gianpag.github.io/infobuddy-calendar-sync/privacy
+#   https://gianpag.github.io/infobuddy-calendar-sync/terms
+title: InfoBuddy
+baseurl: /infobuddy-calendar-sync

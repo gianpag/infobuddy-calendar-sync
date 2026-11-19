@@ -1,0 +1,13 @@
+[Unit]
+Description=Run the InfoBuddy generic Google Calendar sync every 15 minutes
+
+[Timer]
+# A recurring interval (not fixed clock times like the twice-daily InfoMentor pipeline
+# timer) -- this is a cheap, fast, no-browser API sync, safe to run often so a calendar
+# widget consumer (e.g. InkBuddy) never sees stale-for-hours data.
+OnBootSec=2min
+OnUnitActiveSec=15min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

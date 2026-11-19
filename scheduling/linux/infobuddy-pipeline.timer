@@ -1,0 +1,13 @@
+[Unit]
+Description=Run the InfoBuddy pipeline twice daily (06:30 and 18:30)
+
+[Timer]
+OnCalendar=*-*-* 06:30:00
+OnCalendar=*-*-* 18:30:00
+# If the VM was off/suspended at the scheduled time, run as soon as it's next up --
+# the same intent as macOS launchd's deferred-wake behavior and Windows'
+# -StartWhenAvailable.
+Persistent=true
+
+[Install]
+WantedBy=timers.target
