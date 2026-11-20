@@ -1,7 +1,5 @@
 # Installation (InfoBuddy)
 
-For the whole system (hardware, firmware, feed-service), see the companion InkBuddy project.
-
 ```sh
 git clone https://github.com/gianpag/infobuddy-calendar-sync && cd infobuddy-calendar-sync
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt

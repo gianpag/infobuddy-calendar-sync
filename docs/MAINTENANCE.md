@@ -1,17 +1,17 @@
 # Maintenance (InfoBuddy)
 
-On a host that also runs InkBuddy, the **`inkbuddy` CLI** manages these units; see
-InkBuddy's maintenance documentation.
+Manage the Linux units with `systemctl --user` and `journalctl --user`:
 
 ```sh
-inkbuddy status pipeline|calsync|link
-inkbuddy logs pipeline -f
-inkbuddy run pipeline|calsync
-inkbuddy restart link
+systemctl --user status infobuddy-pipeline.timer infobuddy-generic-calendar-sync.timer infobuddy-link-ui
+systemctl --user list-timers 'infobuddy-*'
+systemctl --user start infobuddy-pipeline.service
+systemctl --user start infobuddy-generic-calendar-sync.service
+systemctl --user restart infobuddy-link-ui
+journalctl --user -u infobuddy-pipeline.service
+journalctl --user -u infobuddy-generic-calendar-sync.service
+journalctl --user -u infobuddy-link-ui -f
 ```
-
-Without the CLI, use `systemctl --user status|restart <unit>`,
-`systemctl --user list-timers 'infobuddy-*'` and `journalctl --user -u <unit>`.
 
 ## Updating
 
@@ -58,8 +58,8 @@ Back up these together, and keep them private:
 
 | Symptom | Fix |
 |---|---|
-| Accounts UI unreachable | `inkbuddy status link`: check that port 8200 is listening, then `inkbuddy logs link`. |
-| Locked out of the accounts UI | 5 failures within 15 min lock that IP out for 15 min. Wait, or `inkbuddy restart link`. |
-| Calendar widget not updating | `inkbuddy status calsync`, then `inkbuddy logs calsync`. Re-link the account if its token expired. |
+| Accounts UI unreachable | `systemctl --user status infobuddy-link-ui`: check that port 8200 is listening, then `journalctl --user -u infobuddy-link-ui`. |
+| Locked out of the accounts UI | 5 failures within 15 min lock that IP out for 15 min. Wait, or `systemctl --user restart infobuddy-link-ui`. |
+| Read sync not updating | `systemctl --user status infobuddy-generic-calendar-sync.timer`, then `journalctl --user -u infobuddy-generic-calendar-sync.service`. Re-link the account if its token expired. |
 | Playwright fails on Linux | `.venv/bin/playwright install --with-deps chromium` |
 | Keyring errors in a service | Check that `EnvironmentFile=` points at `keyring-secret.env` (`systemctl --user cat <unit>`). |

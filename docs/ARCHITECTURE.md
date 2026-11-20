@@ -1,9 +1,7 @@
 # Architecture (InfoBuddy)
 
-InfoBuddy is the data-producing half of the e-paper dashboard system. The display half
-(ESP32 firmware, feed-service, designer) is the companion **InkBuddy** project. See
-its architecture documentation for the full system, including the feed contract, tiles
-and the deep-sleep cycle.
+InfoBuddy is self-hosted software that extracts school information from InfoMentor
+and can sync it to your own Google Calendar.
 
 ```mermaid
 flowchart LR
@@ -16,16 +14,13 @@ flowchart LR
   LUI[calendar_link_ui.py :8200<br/>device-flow account linking] -.refresh tokens.-> KR[(OS keyring)]
   RS[google_calendar_read_sync.py<br/>every 15 min] --> G[(out/generic-calendar.json)]
   KR --> RS
-  S --> INK[InkBuddy feed-service<br/>study_calendar widget]
-  G --> INK2[InkBuddy feed-service<br/>calendar widget]
 ```
 
 - **`run_pipeline.py`** chains extraction, Study Brief, change detection and the optional
   push sync. It records the outcome in `.infomentor-state/sync_status.json`, which is
-  read by the tray/menu-bar apps and by InkBuddy's `inkbuddy status`.
-- **Generic Google Calendar read sync** is independent of InfoMentor (CLAUDE.md
-  principle 2). Accounts are linked with the OAuth *Device Authorization Grant*, so a
-  headless host never needs a browser.
+  read by the tray/menu-bar apps.
+- **Generic Google Calendar read sync** is independent of InfoMentor. Accounts are linked
+  with the OAuth *Device Authorization Grant*, so a headless host never needs a browser.
 - **`calendar_link_ui.py`** is a small stdlib web UI for linking accounts and choosing
   calendars. It has its own login (keyring service `infobuddy-link-ui`) with a session
   cookie, CSRF tokens and a login rate limit; see `link_ui_auth.py` and `web_auth.py`.

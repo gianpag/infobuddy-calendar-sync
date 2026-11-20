@@ -9,18 +9,16 @@ The extractor still captures the normal timetable, but the normalized output now
 ## Documentation
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): data flow (InfoMentor → Study Brief,
-  Google Calendar read sync → InkBuddy), processes, credentials.
+  Google Calendar sync), processes, credentials.
 - [docs/INSTALL.md](docs/INSTALL.md): setup, keyring (including cryptfile on headless
   hosts), accounts-UI login, systemd units and linger.
-- [docs/MAINTENANCE.md](docs/MAINTENANCE.md): `inkbuddy` CLI, updates, re-linking
-  Google, BankID, backups, troubleshooting.
+- [docs/MAINTENANCE.md](docs/MAINTENANCE.md): updates, re-linking Google, BankID,
+  backups, troubleshooting.
 - [docs/USER_GUIDE.md](docs/USER_GUIDE.md): the Google Calendar accounts UI and Study
   Brief.
 - [Privacy Policy](PRIVACY.md): your data stays on your machine; the author collects
   nothing.
 - [Terms of Service](TERMS.md): not a service; provided as is, at your own risk.
-- Companion project: **InkBuddy**, which has the e-paper firmware, the feed-service
-  and the visual designer.
 - License: [MIT](LICENSE)
 
 ## Quickstart
@@ -330,7 +328,7 @@ python study_brief.py infomentor.v3.json \
   --markdown-output study-brief.md
 ```
 
-The Markdown output is useful for quick human review; the JSON output is intended as the stable input for future Google Calendar, notifications, Home Assistant, or e-paper integrations.
+The Markdown output is useful for quick human review; the JSON output is intended as the stable input for Google Calendar sync and other local uses.
 
 ### Duplicate handling
 
@@ -541,9 +539,9 @@ Timezone defaults to `Europe/Stockholm`; override with `--timezone` if needed.
 
 Separate from the Google Calendar sync above, which *pushes* InfoMentor study items
 into per-child calendars. This one *reads* events from arbitrary personal/work Google
-accounts/calendars for a non-InfoMentor consumer -- e.g. a generic calendar widget on
-an e-paper dashboard (InkBuddy). It has no InfoMentor dependency at all (CLAUDE.md
-principle 2: don't couple extraction to external integrations).
+accounts and calendars you select, and writes a local JSON file. It has no InfoMentor
+dependency at all (CLAUDE.md principle 2: don't couple extraction to external
+integrations).
 
 Supports linking more than one Google account and more than one calendar per account.
 Designed to run unattended on a headless host (no local browser) via OAuth's **Device
@@ -617,8 +615,7 @@ once credentials are set:
 ```
 
 The username and password are stored only in the keyring, under service
-`infobuddy-link-ui`; see `link_ui_auth.py`. This is InfoBuddy's own entry, even when you
-use the same login as InkBuddy's admin.
+`infobuddy-link-ui`; see `link_ui_auth.py`.
 
 - **Browsers** get a `/login` page and a session cookie (`HttpOnly`, `SameSite=Strict`;
   `INFOBUDDY_COOKIE_SECURE=1` adds `Secure` behind HTTPS).
@@ -631,17 +628,8 @@ load `KEYRING_CRYPTFILE_PASSWORD` first, the same way the units do.
 
 On Linux, `scheduling/linux/install.sh` also installs **`infobuddy-link-ui.service`**, a
 `systemd --user` service with `Restart=on-failure` and journal logs, so the UI starts at
-boot (with linger enabled). InkBuddy's admin header links to it as "Google Calendar
-accounts".
-
-On a host running InkBuddy too, InkBuddy's **`inkbuddy` CLI** (`scripts/inkbuddy` in that
-repo) manages all of these:
-
-- `inkbuddy status` shows each unit's state, PID, uptime and port, the last pipeline
-  result from `sync_status.json`, and when each device was last seen.
-- `inkbuddy restart link`
-- `inkbuddy logs pipeline -f`
-- `inkbuddy run calsync`
+boot (with linger enabled). Manage it with `systemctl --user` and
+`journalctl --user -u infobuddy-link-ui`.
 
 ## Running automatically
 

@@ -1,0 +1,163 @@
+---
+title: InfoBuddy Calendar Sync
+permalink: /
+layout: none
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InfoBuddy Calendar Sync</title>
+  <meta name="description" content="Self-hosted software that reads your family's school schedule from InfoMentor and keeps it in your own Google Calendar.">
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --bg-card: #fffdf8;
+      --ink: #1c2a2e;
+      --muted: #4d5c61;
+      --line: #d8d2c6;
+      --teal: #0f5f5b;
+      --teal-dark: #0a4542;
+      --teal-soft: #e4f1ef;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    a { color: var(--teal); }
+    a:hover { color: var(--teal-dark); }
+    header, main, footer { width: min(760px, calc(100% - 2.5rem)); margin-left: auto; margin-right: auto; }
+    header { padding: 3rem 0 1.5rem; }
+    .mark {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+      font-weight: 650;
+      margin: 0 0 0.6rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 2.6rem);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin: 0 0 0.75rem;
+    }
+    .tagline {
+      font-size: 1.2rem;
+      color: var(--muted);
+      margin: 0 0 1.5rem;
+      max-width: 36rem;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 0.55rem 1rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .btn-primary { background: var(--teal); color: #fff; }
+    .btn-primary:hover { background: var(--teal-dark); color: #fff; }
+    .btn-ghost { background: transparent; color: var(--teal-dark); border: 1px solid var(--line); }
+    main { padding-bottom: 3rem; }
+    section {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.4rem 1.5rem 1.5rem;
+      margin: 1rem 0 0;
+    }
+    h2 {
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.8rem;
+    }
+    ul { margin: 0; padding-left: 1.15rem; }
+    li { margin: 0.45rem 0; }
+    li::marker { color: var(--teal); }
+    .scope {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.82em;
+      background: var(--teal-soft);
+      color: var(--teal-dark);
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+      word-break: break-all;
+    }
+    footer {
+      padding: 1.5rem 0 3rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+      border-top: 1px solid var(--line);
+      margin-top: 1.5rem;
+    }
+    footer p { margin: 0.4rem 0; }
+    footer nav { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin-bottom: 0.8rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <p class="mark">Self-hosted software</p>
+    <h1>InfoBuddy Calendar Sync</h1>
+    <p class="tagline">Keep your family’s InfoMentor school schedule in your own Google Calendar.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="https://github.com/gianpag/infobuddy-calendar-sync#quickstart">Quick start</a>
+      <a class="btn btn-ghost" href="privacy">Privacy Policy</a>
+      <a class="btn btn-ghost" href="terms">Terms of Service</a>
+    </div>
+  </header>
+  <main>
+    <section>
+      <h2>What it does</h2>
+      <ul>
+        <li>Reads school information from InfoMentor on the computer where you run it: tests, exams, quizzes, homework, and school events, plus the regular timetable when you opt in.</li>
+        <li>Creates and updates events in your own Google Calendar. There is one calendar per child for school items, named after that child. If you enable timetable sync, lessons go into a separate per-child timetable calendar that you can show or hide on its own.</li>
+        <li>Detects changes on later runs: events are updated in place when details change, and removed when an item has genuinely disappeared from InfoMentor, so the same item is not created twice.</li>
+        <li>Timetable sync uses the exact lesson scheduled for each day, not a repeating weekly rule, so substitute teachers, room changes, and other one-off adjustments are reflected accurately.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>How it works</h2>
+      <ul>
+        <li>It is personal software you install and run on your own computer. It is not a hosted service. The author does not operate servers, does not collect data, and has no access to your information.</li>
+        <li>After you set it up, it can run on a schedule on your machine — for example twice a day with the included Linux timer. macOS and Windows schedulers are also included.</li>
+        <li>You connect Google with OAuth. On a computer with a browser, that can be a one-time sign-in window. On a headless host, you use device sign-in: open a Google URL on any other device, enter a short code, and approve access.</li>
+        <li>Tokens are stored in your operating system’s keychain, not in a plain text file. Each installation uses its own Google Cloud OAuth client.</li>
+        <li>All data stays with you: on your machine, and in your own Google account when you choose to sync.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Google access</h2>
+      <p>Depending on which feature you use, the software requests only these Google permissions:</p>
+      <ul>
+        <li><span class="scope">https://www.googleapis.com/auth/calendar</span> — used by the InfoMentor-to-Calendar sync, so the software can create, update, and delete events in calendars in your Google account.</li>
+        <li><span class="scope">https://www.googleapis.com/auth/calendar.readonly</span> — used to list your calendars and read events from calendars you select, for example when you link an account and choose what to keep a local copy of.</li>
+        <li><span class="scope">https://www.googleapis.com/auth/userinfo.email</span> — used to read the email address of the Google account you linked, so the software can label and manage that account on your machine.</li>
+      </ul>
+      <p>Use of information received from Google APIs follows the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements. See the <a href="privacy">Privacy Policy</a> for details.</p>
+    </section>
+    <section>
+      <h2>Get started</h2>
+      <p>The source, setup steps, and scheduler install scripts are in the <a href="https://github.com/gianpag/infobuddy-calendar-sync">GitHub repository</a>. Start with the <a href="https://github.com/gianpag/infobuddy-calendar-sync#quickstart">quick start</a>.</p>
+      <p>The software is released under the <a href="https://github.com/gianpag/infobuddy-calendar-sync/blob/main/LICENSE">MIT License</a>. Questions can be raised as a <a href="https://github.com/gianpag/infobuddy-calendar-sync/issues">GitHub issue</a>.</p>
+    </section>
+  </main>
+  <footer>
+    <nav>
+      <a href="https://github.com/gianpag/infobuddy-calendar-sync">Source code</a>
+      <a href="privacy">Privacy Policy</a>
+      <a href="terms">Terms of Service</a>
+      <a href="https://github.com/gianpag/infobuddy-calendar-sync/blob/main/LICENSE">MIT License</a>
+    </nav>
+    <p>InfoBuddy Calendar Sync is not affiliated with, endorsed by, or sponsored by InfoMentor or Google.</p>
+    <p>Provided as is, at your own risk, with no warranty. See the <a href="terms">Terms of Service</a>.</p>
+  </footer>
+</body>
+</html>
